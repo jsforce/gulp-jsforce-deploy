@@ -20,7 +20,7 @@ module.exports = function(options) {
       return callback(err);
     }
     var config = {};
-    "loginUrl,accessToken,instanceUrl,refreshToken,clientId,clientSecret,redirectUri,logLevel".split(',').forEach(function(prop) {
+    "loginUrl,accessToken,instanceUrl,refreshToken,clientId,clientSecret,redirectUri,logLevel,version".split(',').forEach(function(prop) {
       if (options[prop]) { config[prop] = options[prop]; }
     });
     var conn = new jsforce.Connection(config);
