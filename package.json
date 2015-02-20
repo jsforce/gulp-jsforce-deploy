@@ -1,0 +1,37 @@
+{
+  "name": "gulp-jsforce-deploy",
+  "version": "1.0.0",
+  "description": "Deploying Salesforce package using JSforce (no Migration Tool dependency)",
+  "main": "index.js",
+  "keywords": [
+    "salesforce",
+    "salesforce.com",
+    "sfdc",
+    "force.com",
+    "database.com",
+    "gulpplugin",
+    "deploy"
+  ],
+  "scripts": {
+    "pretest": "./node_modules/.bin/gulp deploy",
+    "test": "./node_modules/.bin/mocha --require intelli-espower-loader"
+  },
+  "files": [
+    "index.js"
+  ],
+  "author": "Shinichi Tomita <shinichi.tomita@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "gulp-util": "^3.0.3",
+    "jsforce": "^1.4.0",
+    "through2": "^0.6.3"
+  },
+  "devDependencies": {
+    "espower-loader": "^0.10.0",
+    "gulp": "^3.8.11",
+    "gulp-zip": "^2.0.2",
+    "intelli-espower-loader": "^0.6.0",
+    "mocha": "^2.1.0",
+    "power-assert": "^0.10.2"
+  }
+}
