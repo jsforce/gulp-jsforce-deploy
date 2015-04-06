@@ -37,12 +37,16 @@ module.exports = function(options) {
       return conn.metadata.deploy(file.contents).complete({ details: true });
     })
     .then(function(res) {
-      if (res.status === 'Failed') {
-        gutil.log('Deploy failed.');
+      if (res.status !== 'Succeeded') {
+        var message = 'Deploy failed.';
+        if (res.status === 'SucceededPartial') {
+          message = 'Deploy partially successful.';
+        }
+        gutil.log(message);
         if (res.details && res.details.componentFailures) {
           reportFailures(res.details);
         }
-        callback(new gutil.PluginError('gulp-jsforce-deploy', 'Deploy failed'));
+        callback(new gutil.PluginError('gulp-jsforce-deploy', message));
       } else {
         gutil.log('Deploy successful.');
         callback();
