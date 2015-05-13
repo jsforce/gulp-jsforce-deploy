@@ -53,7 +53,7 @@ module.exports = function(options) {
       }
     })
     .then(null, function(err) {
-      gutil.log('Deploy faiiled.');
+      gutil.log('Deploy failed.');
       err = new gutil.PluginError('test', err, { showStack: true });
       callback(err);
     });
