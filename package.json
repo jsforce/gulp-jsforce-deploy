@@ -33,5 +33,9 @@
     "intelli-espower-loader": "^0.6.0",
     "mocha": "^2.1.0",
     "power-assert": "^0.10.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jsforce/gulp-jsforce-deploy.git"
   }
 }
