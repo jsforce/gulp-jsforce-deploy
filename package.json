@@ -1,6 +1,6 @@
 {
   "name": "gulp-jsforce-deploy",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Deploying Salesforce package using JSforce (no Migration Tool dependency)",
   "main": "index.js",
   "keywords": [
@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "gulp-util": "^3.0.3",
-    "jsforce-metadata-tools": "^1.0.1",
+    "jsforce-metadata-tools": "^1.1.0",
     "through2": "^0.6.3"
   },
   "devDependencies": {
