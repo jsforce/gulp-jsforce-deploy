@@ -17,7 +17,10 @@ module.exports = function(options) {
     meta.deployFromZipStream(file.contents, options)
       .then(function(res) {
         meta.reportDeployResult(res, gutil, options.verbose);
-        callback();
+        if (!res.success) {
+          return callback(new Error('Deploy Failed.'));
+        }
+        callback(null, file);
       })
       .catch(function(err) {
         callback(err);
