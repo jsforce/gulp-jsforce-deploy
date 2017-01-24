@@ -53,6 +53,18 @@ gulp.task('deploy', function() {
 $ SF_USERNAME=username@example.com SF_PASSWORD=yourpassword gulp deploy
 ```
 
+If you receive the following error:
+
+```
+-bash: gulp: command not found
+```
+
+Install gulp globally so you can have access to the command in terminal:
+
+``
+$ npm install gulp -g
+``
+
 or if you have `foreman` installed, create `.env` file with above credential information, and execute :
 
 ```
