@@ -20,6 +20,7 @@ module.exports = function(options) {
         if (!res.success) {
           return callback(new Error('Deploy Failed.'));
         }
+        file.contents = new Buffer(JSON.stringify(res));
         callback(null, file);
       })
       .catch(function(err) {
