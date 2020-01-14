@@ -4,7 +4,7 @@ var fancyLog = require('fancy-log')
 var through = require('through2')
 var meta = require('jsforce-metadata-tools')
 
-module.exports = function (options) {
+const deploy = function deploy (options) {
   return through.obj(function (file, enc, callback) {
     if (file.isNull()) {
       return callback(null, file)
@@ -31,3 +31,7 @@ module.exports = function (options) {
       })
   })
 }
+
+deploy.prototype.retrieve = function retrieve (options) {}
+
+module.exports = deploy
