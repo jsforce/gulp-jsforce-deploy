@@ -16,7 +16,7 @@ module.exports = function(options) {
     options.logger = Object.assign({ log: fancyLog }, fancyLog);
     meta.deployFromZipStream(file.contents, options)
       .then(function(res) {
-        meta.reportDeployResult(res, gutil, options.verbose);
+        meta.reportDeployResult(res, options.logger, options.verbose);
         if (!res.success) {
           return callback(new PluginError('gulp-jsforce-deploy', 'Deploy Failed.'));
         }
