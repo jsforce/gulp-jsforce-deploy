@@ -6,7 +6,6 @@ var meta = require('jsforce-metadata-tools');
 
 module.exports = function(options) {
   return through.obj(function(file, enc, callback) {
-    var err;
     if (file.isNull()) {
       return callback(null, file);
     }
