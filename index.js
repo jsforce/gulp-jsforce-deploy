@@ -1,13 +1,13 @@
 'use strict'
-const meta = require('jsforce-metadata-tools')
-const PluginError = require('plugin-error')
-const decompress = require('decompress')
-const fancyLog = require('fancy-log')
-const through = require('through2')
-const parser = require('xml2js')
-const Vinyl = require('vinyl')
+var meta = require('jsforce-metadata-tools')
+var PluginError = require('plugin-error')
+var decompress = require('decompress')
+var fancyLog = require('fancy-log')
+var through = require('through2')
+var parser = require('xml2js')
+var Vinyl = require('vinyl')
 
-const deploy = function deploy (options) {
+var deploy = function deploy (options) {
   return through.obj(function (file, enc, callback) {
     if (file.isNull()) {
       return callback(null, file)
@@ -99,12 +99,12 @@ deploy.extract = function extract (options = {}) {
     }
 
     // options.logger = Object.assign({ log: fancyLog }, fancyLog)
-    const extractFactory = this
+    var extractFactory = this
 
     decompress(file.contents)
       .then(function (files) {
         files.forEach((file) => {
-          const path = file.path.replace(/^unpackaged\//, '')
+          var path = file.path.replace(/^unpackaged\//, '')
 
           extractFactory.push(new Vinyl({
             cwd: './',
