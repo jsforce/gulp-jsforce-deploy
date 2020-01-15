@@ -40,7 +40,7 @@ var deploy = function deploy (options) {
   })
 }
 
-deploy.deploy = function deploy(options) {
+deploy.deploy = function deploy (options) {
   return this.apply(this, options)
 }
 
@@ -58,7 +58,8 @@ deploy.retrieve = function retrieve (options) {
 
     options.logger = Object.assign({ log: fancyLog }, fancyLog)
 
-    parser.parseStringPromise(file.contents.toString('utf8'))
+    parser
+      .parseStringPromise(file.contents.toString('utf8'))
       .then(function (dom) {
         delete dom.Package.$
         options.unpackaged = dom.Package
@@ -73,12 +74,15 @@ deploy.retrieve = function retrieve (options) {
           )
         }
 
-        callback(null, new Vinyl({
-          cwd: file.cwd,
-          base: file.base,
-          path: file.base + '/' + (options.filename || 'package.zip'),
-          contents: new Buffer(res.zipFile, 'base64')
-        }))
+        callback(
+          null,
+          new Vinyl({
+            cwd: file.cwd,
+            base: file.base,
+            path: file.base + '/' + (options.filename || 'package.zip'),
+            contents: new Buffer(res.zipFile, 'base64')
+          })
+        )
       })
       .catch(function (err) {
         callback(err)
@@ -103,14 +107,16 @@ deploy.extract = function extract (options = {}) {
 
     decompress(file.contents)
       .then(function (files) {
-        files.forEach((file) => {
+        files.forEach(file => {
           var path = file.path.replace(/^unpackaged\//, '')
 
-          extractFactory.push(new Vinyl({
-            cwd: './',
-            path,
-            contents: file.data
-          }))
+          extractFactory.push(
+            new Vinyl({
+              cwd: './',
+              path,
+              contents: file.data
+            })
+          )
 
           if (options.verbose) fancyLog(`Extracted file '${path}'`)
         })

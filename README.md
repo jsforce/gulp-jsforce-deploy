@@ -57,17 +57,20 @@ gulp.task('deploy', async function () {
 
 gulp.task('retrieve', async function () {
   return new Promise((resolve, reject) => {
-    gulp.src('./package.xml')
-      .pipe(retrieve({
-        // Filename is optional; uses name 'package.zip' by default.
-        filename: 'pkg.zip',
-        username: process.env.SF_USERNAME,
-        password: process.env.SF_PASSWORD
-        //, loginUrl: 'https://test.salesforce.com'
-        //, pollTimeout: 120*1000
-        //, pollInterval: 10*1000
-        //, version: '33.0'
-      }))
+    gulp
+      .src('./package.xml')
+      .pipe(
+        retrieve({
+          // Filename is optional; uses name 'package.zip' by default.
+          filename: 'pkg.zip',
+          username: process.env.SF_USERNAME,
+          password: process.env.SF_PASSWORD
+          //, loginUrl: 'https://test.salesforce.com'
+          //, pollTimeout: 120*1000
+          //, pollInterval: 10*1000
+          //, version: '33.0'
+        })
+      )
       // If the extract pipe is omitted, then the zip file will be written to the destination.
       .pipe(extract())
       .pipe(gulp.dest('./pkg'))
