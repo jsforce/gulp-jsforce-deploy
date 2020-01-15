@@ -7,7 +7,7 @@ var through = require('through2')
 var parser = require('xml2js')
 var Vinyl = require('vinyl')
 
-var deploy = function deploy (options) {
+var forceDeploy = function deploy (options) {
   return through.obj(function (file, enc, callback) {
     if (file.isNull()) {
       return callback(null, file)
@@ -40,11 +40,11 @@ var deploy = function deploy (options) {
   })
 }
 
-deploy.deploy = function deploy (options) {
-  return this.apply(this, options)
+forceDeploy.deploy = function deploy (options) {
+  return forceDeploy(options)
 }
 
-deploy.retrieve = function retrieve (options) {
+forceDeploy.retrieve = function retrieve (options) {
   return through.obj(function (file, enc, callback) {
     if (file.isNull()) {
       return callback(null, file)
@@ -90,7 +90,7 @@ deploy.retrieve = function retrieve (options) {
   })
 }
 
-deploy.extract = function extract (options = {}) {
+forceDeploy.extract = function extract (options = {}) {
   return through.obj(function (file, enc, callback) {
     if (file.isNull()) {
       return callback(null, file)
@@ -130,4 +130,4 @@ deploy.extract = function extract (options = {}) {
   })
 }
 
-module.exports = deploy
+module.exports = forceDeploy
