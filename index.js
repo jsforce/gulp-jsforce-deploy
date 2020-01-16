@@ -19,23 +19,45 @@ var forceDeploy = function deploy (options) {
       )
     }
 
-    options.logger = options.logger === undefined
-      ? Object.assign({ log: fancyLog }, fancyLog)
-      : options.logger
+    var deployFactory = this
+    options.logger =
+      options.logger === undefined
+        ? Object.assign({ log: fancyLog }, fancyLog)
+        : options.logger
 
     meta
       .deployFromZipStream(file.contents, options)
       .then(function (res) {
+        var resultFile
         meta.reportDeployResult(res, options.logger, options.verbose)
 
         if (!res.success) {
           if (options.checkOnly && options.checkOnlyNoFail) {
-            fancyLog('Deploy Failed. Error suppressed by option; check output for reason.')
+            fancyLog(
+              'Deploy Failed. Error suppressed by option; check output for reason.'
+            )
           } else {
             return callback(
               new PluginError('gulp-jsforce-deploy', 'Deploy Failed.')
             )
           }
+        }
+
+        if (options.resultPassThrough || options.resultOnly) {
+          resultFile = new Vinyl({
+            cwd: './',
+            base: './',
+            path: './deploy-result.json',
+            contents: new Buffer(JSON.stringify(res, null, 2), 'utf8')
+          })
+        }
+
+        if (options.resultPassThrough && !options.resultOnly) {
+          deployFactory.push(resultFile)
+        }
+
+        if (options.resultOnly && !options.resultPassThrough) {
+          file = resultFile
         }
 
         callback(null, file)
@@ -62,9 +84,10 @@ forceDeploy.retrieve = function retrieve (options) {
       )
     }
 
-    options.logger = options.logger === undefined
-      ? Object.assign({ log: fancyLog }, fancyLog)
-      : options.logger
+    options.logger =
+      options.logger === undefined
+        ? Object.assign({ log: fancyLog }, fancyLog)
+        : options.logger
 
     parser
       .parseStringPromise(file.contents.toString('utf8'))
@@ -79,6 +102,17 @@ forceDeploy.retrieve = function retrieve (options) {
         if (!res.success) {
           return callback(
             new PluginError('gulp-jsforce-deploy', 'Retrieve Failed.')
+          )
+        }
+
+        if (options.resultPassThrough) {
+          deployFactory.push(
+            new Vinyl({
+              cwd: './',
+              base: './',
+              path: './retrieve-result.json',
+              contents: new Buffer(JSON.stringify(res, null, 2), 'utf8')
+            })
           )
         }
 
@@ -110,7 +144,6 @@ forceDeploy.extract = function extract (options = {}) {
       )
     }
 
-    // options.logger = Object.assign({ log: fancyLog }, fancyLog)
     var extractFactory = this
 
     decompress(file.contents)
