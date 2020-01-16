@@ -19,7 +19,9 @@ var forceDeploy = function deploy (options) {
       )
     }
 
-    options.logger = Object.assign({ log: fancyLog }, fancyLog)
+    options.logger = options.logger === undefined
+      ? Object.assign({ log: fancyLog }, fancyLog)
+      : options.logger
 
     meta
       .deployFromZipStream(file.contents, options)
@@ -27,9 +29,13 @@ var forceDeploy = function deploy (options) {
         meta.reportDeployResult(res, options.logger, options.verbose)
 
         if (!res.success) {
-          return callback(
-            new PluginError('gulp-jsforce-deploy', 'Deploy Failed.')
-          )
+          if (options.checkOnly && options.checkOnlyNoFail) {
+            fancyLog('Deploy Failed. Error suppressed by option; check output for reason.')
+          } else {
+            return callback(
+              new PluginError('gulp-jsforce-deploy', 'Deploy Failed.')
+            )
+          }
         }
 
         callback(null, file)
@@ -56,7 +62,9 @@ forceDeploy.retrieve = function retrieve (options) {
       )
     }
 
-    options.logger = Object.assign({ log: fancyLog }, fancyLog)
+    options.logger = options.logger === undefined
+      ? Object.assign({ log: fancyLog }, fancyLog)
+      : options.logger
 
     parser
       .parseStringPromise(file.contents.toString('utf8'))
